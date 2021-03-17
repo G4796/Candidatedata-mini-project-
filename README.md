@@ -1,2 +1,2 @@
-# CandidateregistrationForm
-Create registration form using JsonPowerDB database.
+# Candidate data 
+CRUD operation using JsonPowerDB database.
