@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Web form Example</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src=" http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js"></script>       
+
+    </head>
+    <body>
+        <div class="Container">
+            <h2>Registration form</h2>
+            <form id="CandidateForm" method="post">
+                <div class="form-group">
+                    <span><label for="CandidateId">Candidate ID:</label> <label id="CandidateIdLabel">
+                        </label></span>
+                    <input type="text" class="form-control" name="CandidateId" id="CandidateId"
+                           placeholder="Enter Candidate ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="CandicateName">Candidate Name:</label>
+                    <input type="text" class="form-control" id="CandicateName"
+                           placeholder="Enter Candidate Name" name="CandicateName">
+                </div>
+                <div class="form-group">
+                    <label for="CandidateEmail">Candidate Email:</label>
+                    <input type="CandidateEmail" class="form-control" id="CandidateEmail"
+                           placeholder="Enter Candidate Email" name="CandidateEmail">
+                </div>
+                <input type="button" class="btn btn-primary" id="Save" value="Save"
+                       onclick="save();">
+            </form>
+        </div>
+        <script>
+            function validateAndGetFormData() {
+                var CandidateIdVar = $("#CandidateId").val();
+
+                if (CandidateIdVar === "") {
+                    alert("Candidate ID is Required ");
+                    $("#CandidateId").focus();
+                    return "";
+                }
+                var CandicateNameVar = $("#CandicateName").val();
+                if (CandicateNameVar === "") {
+                    alert("Candidate Name is Required ");
+                    $("#CandicateName").focus();
+                    return "";
+                }
+                var CandidateEmailVar = $("#CandidateEmail").val();
+                if (CandidateEmailVar === "") {
+                    alert("Candidate Email is Required ");
+                    $("#CandidateEmail").focus();
+                    return "";
+                }
+                var jsonStrObj = {
+                    CandId: CandidateIdVar,
+                    name: CandicateNameVar,
+                    email: CandidateEmailVar
+                };
+                return JSON.stringify(jsonStrObj);
+            }
+            function resetForm() {
+                $("#CandidateId").val("");
+                $("#CandicateName").val("");
+                $("#CandidateEmail").val("");
+                $("#CandidateId").focus();
+            }
+            function save() {
+                var jsonStr = validateAndGetFormData();
+                if (jsonStr === "") {
+                    return;
+                }
+                var putReqStr = createPUTRequest("90935759|-31948838138258415|90934556",
+                        jsonStr, "Candidate", "Cand-Info");
+                alert(putReqStr);
+                jQuery.ajaxSetup({async: false});
+                var resultObj = executeCommandAtGivenBaseUrl(putReqStr, "http://api.login2explore.com:5577", "/api/iml");
+                alert(JSON.stringify(resultObj));
+                jQuery.ajaxSetup({async: true});
+                resetForm();
+            }
+        </script>
+    </body>
+</html>

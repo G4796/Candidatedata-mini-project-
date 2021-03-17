@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>L2E Mini Project</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js"></script>
+
+    </head>
+    <body>
+    <center><h1>Update Data</h1></center>
+    <center><input id="CandId" maxlength="50" placeholder="Candidate Id" name="ID" type="text" /><br><br>
+        <p>You can change your email only.</p>
+        <input id="email" maxlength="50" placeholder="Email Id" name="emailId" type="text" /><br><br>
+        <input type="button" value="UPDATE EMAIL" onclick="updateData();"/></center>
+    <p id="show"></p>
+    <script>
+        function updateData(){
+            var token = "90935759|-31948838138258415|90934556";
+            var dbname = "Candidate";
+            var relationName = "Cand-Info";
+            var candidateId = parseInt(document.getElementById("CandId").value);
+            var emailId = document.getElementById("email").value;
+            
+            var jsonObj = {
+                email : emailId
+            };
+            var reqString = createUPDATERecordRequest(token, JSON.stringify(jsonObj), dbname, relationName, candidateId);
+            alert(reqString);
+            jQuery.ajaxSetup({async: false});
+            var resultObj = executeCommandAtGivenBaseUrl(reqString,
+                    "http://api.login2explore.com:5577", "/api/iml");
+            jQuery.ajaxSetup({async: true});
+            alert(JSON.stringify(resultObj));
+            
+        }
+    </script>
+    </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>L2E Mini Project</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js"></script>
+    </head>
+    <body>
+    <center><h1>Show Data</h1></center>
+    <center><input id="candidateid" maxlength="50" placeholder="Candidate Id" name="candidateid" type="text" /><br><br>
+        <input type="button" value="SHOW CANDIDATE" onclick="showData();"/></center>
+    <p id="show"></p>
+    <script>       
+        function showData(){
+            var token = "90935759|-31948838138258415|90934556";
+            var dbname = "Candidate";
+            var relationName = "Cand-Info";
+            var candidateId = document.getElementById("candidateid").value;
+            var jsonStr = {
+                CandId : parseInt(candidateId)
+            };
+            var reqString = createGETRequest(token, dbname, relationName, JSON.stringify(jsonStr));           
+            alert(reqString);
+            jQuery.ajaxSetup({async: false});
+            var resultObj = executeCommandAtGivenBaseUrl(reqString,
+                    "http://api.login2explore.com:5577", "/api/irl");
+            jQuery.ajaxSetup({async: true});
+            
+            var data = resultObj.data;
+            var obj = JSON.parse(data);
+            console.log("data"+obj);
+            var mainContainer = document.getElementById("show");
+            mainContainer.innerHTML =  "Candidate Id : " + obj.CandId +"<br>"+  "Name : " + obj.name +"<br>"+ "      Email : " +obj.email;              
+        }
+    </script>
+    </body>
+</html>
